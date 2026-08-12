@@ -494,8 +494,13 @@ function Show-RetrySuggestion {
 
         Write-Host "`nDue to error(s), please rerun all failed subscriptions in a single command:" -ForegroundColor Cyan
         $retryCmd = "pwsh AzureCost/azure-cost-report.ps1 -Tenant `"$tenantParam`" -Subscriptions $failedNames"
-        if ($MonthsBack -ne 12) {
+        if ($StartDate) {
+            $retryCmd += " -StartDate `"$StartDate`""
+        } elseif ($MonthsBack -ne 12) {
             $retryCmd += " -MonthsBack $MonthsBack"
+        }
+        if ($EndDate) {
+            $retryCmd += " -EndDate `"$EndDate`""
         }
         if ($OutputDir -ne "Output") {
             $retryCmd += " -OutputDir `"$OutputDir`""
